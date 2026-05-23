@@ -37,8 +37,8 @@ function ProfilePage() {
           <button onClick={() => navigate(routePaths.myOrders)} type="button">
             My Orders
           </button>
-          <button onClick={() => navigate(routePaths.changePassword)} type="button">
-            Change Password
+          <button disabled title="Feature unavailable" type="button">
+            Change Password (Unavailable)
           </button>
           <button
             onClick={() => {
