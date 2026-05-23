@@ -1,4 +1,4 @@
-import { createContext, useContext, useMemo, useState, type ReactNode } from 'react';
+import { createContext, useCallback, useContext, useMemo, useState, type ReactNode } from 'react';
 import type { AuthState, AuthUser } from '../types/auth.types';
 
 const AUTH_STORAGE_KEY = 'aroma_auth_state';
@@ -46,21 +46,21 @@ const persistAuthState = (state: AuthState) => {
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [authState, setAuthState] = useState<AuthState>({ token: null, user: null });
 
-  const login = (token: string, user: AuthUser) => {
+  const login = useCallback((token: string, user: AuthUser) => {
     const nextState = { token, user };
     setAuthState(nextState);
     persistAuthState(nextState);
-  };
+  }, []);
 
-  const logout = () => {
+  const logout = useCallback(() => {
     const nextState = { token: null, user: null };
     setAuthState(nextState);
     persistAuthState(nextState);
-  };
+  }, []);
 
-  const hydrateFromStorage = () => {
+  const hydrateFromStorage = useCallback(() => {
     setAuthState(getStoredAuthState());
-  };
+  }, []);
 
   const contextValue = useMemo(
     () => ({
@@ -71,7 +71,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       logout,
       hydrateFromStorage
     }),
-    [authState.token, authState.user]
+    [authState.token, authState.user, login, logout, hydrateFromStorage]
   );
 
   return <AuthContext.Provider value={contextValue}>{children}</AuthContext.Provider>;

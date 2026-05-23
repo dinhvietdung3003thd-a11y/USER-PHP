@@ -7,7 +7,7 @@ function App() {
 
   useEffect(() => {
     hydrateFromStorage();
-  }, [hydrateFromStorage]);
+  }, []);
 
   return <AppRouter />;
 }
