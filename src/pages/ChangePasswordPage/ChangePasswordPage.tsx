@@ -42,6 +42,7 @@ function ChangePasswordPage() {
     }
 
     try {
+      console.log('CHANGE PASSWORD TOKEN:', token);
       const result = await authService.changePassword(token, {
         currentPassword,
         newPassword,
